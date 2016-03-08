@@ -19,6 +19,9 @@
 
 
 ## Test-Kitchen
+
+| Command | Description |
+| --- | --- |
 | export KITCHEN_YAML=".kitchen.cloud.yml" | activates another Kitchen YAML for your current shell session |
 | kitchen list | list all your instances with their statuses |
 | kitchen conv(erge) (-c N) (suitename) | run a converge for your instance(s); if instance is not provisioned - do it first - increase concurrency with -c switch; specify part-name of suite if only some suites wanted |
@@ -33,6 +36,9 @@
 
 
 ## Berkshelf
+
+| Command | Description |
+| --- | --- |
 | berks update | Updates the Berksfile lock file (Berksfile.lock); use the install instead of update if the lockfile does not yet exist |
 | berks upload (cookbook_name) | Uploads all cookbook with dependencies to Chef server. A single cookbook can be specified. Does not re-upload if cookbook is already found. |
 | berks apply (-f envfile.json) environment_name | Updated cookbook locks from Berksfile.lock to Chef server (or - if -f switch used - a local environment file) |
@@ -41,6 +47,9 @@
 
 
 ## Others
+
+| Command | Description |
+| --- | --- |
 | chef-apply your_recipe.rb | Runs your recipe against your local node; useful for simple local recipe testing |
 | rubocop * | (on cookbook top folder) runs RuboCop (static code analyzer) "cops" against your code |
 | foodcritic * | (on cookbook top folder) runs Foodcritic against your code |
