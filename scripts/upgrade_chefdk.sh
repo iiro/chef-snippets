@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # This is an attempt to help upgrading your ChefDK.
-
+##
+## NOTICE! Only OSX is supporter for now! Sorry!
+##
 
 
 function check_chefdk_prerequirements_for_upgrade() {
