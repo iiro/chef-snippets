@@ -43,6 +43,7 @@
 | berks upload (cookbook_name) | Uploads all cookbook with dependencies to Chef server. A single cookbook can be specified. Does not re-upload if cookbook is already found. |
 | berks apply (-f envfile.json) environment_name | Updated cookbook locks from Berksfile.lock to Chef server (or - if -f switch used - a local environment file) |
 | berks outdated | Shows all outdated Chef cookbooks which "berks update" would update |
+| berks viz | Draws a dependency map from your Berksfile.lock. Requires Graphviz. |
 
 
 
