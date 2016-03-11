@@ -28,6 +28,8 @@ driver:
 
 provisioner:
   name: chef_zero
+  ## For Policyfile...
+  # name: policyfile_zero
 
 # Uncomment the following verifier to leverage Inspec instead of Busser (the
 # default verifier)
