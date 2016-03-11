@@ -1,0 +1,30 @@
+
+source 'https://rubygems.org'
+
+# Let's include all the necessary ChefDK gems here.
+# https://opscode-omnibus-packages-current.s3.amazonaws.com/mac_os_x/10.11/x86_64/chefdk-0.11.0-1.dmg
+# Test-Kitchen stuff
+# gem 'kitchen-ec2'
+# gem 'kitchen-vagrant'
+gem 'kitchen-docker'
+gem 'kitchen-transport-rsync'
+# gem 'guard'
+gem 'guard-foodcritic'
+gem 'guard-kitchen'
+gem 'guard-rubocop'
+gem 'thor-scmversion'
+# gem 'colorize'
+
+# Plugins for Knife
+gem 'knife-solve'
+gem 'knife-cfn'
+gem 'knife-preflight'
+gem 'knife-ohno'
+gem 'knife-audit'
+gem 'knife-crawl'
+gem 'knife-env-diff'
+gem 'knife-block'
+
+
+# Other
+gem 'papertrail'
