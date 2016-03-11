@@ -1,0 +1,25 @@
+
+## Kitchen-EC2 profile configuration
+
+# SSH keypair name in disk, hard-coded location ~/.ssh/$SSH_KEY
+SSH_KEY=keypair_file_name
+
+# Username which connects to instance for TK runs; ubuntu recommended for ubuntu
+SSH_USER=sshuser
+
+# Keypair name in AWS
+AWS_KEYPAIR_NAME=my_keypair
+
+# AWS profile name; see ~/.aws/credentials or ~/.aws/config
+AWS_PROFILE="my_aws_profile_name"
+
+# AWS region
+AWS_REGION="eu-central-1"
+
+# Subnet ID for Test-Kitchen runs. Needs to be a public subnet!
+AWS_SUBNET_ID="subnet-XXXXXXXX"
+
+# Security group IDs for Test-Kitchen; required rules e.g. SSH in
+AWS_SECURITY_GROUP_IDS="sg-YYYYYYYY"
+
+export AWS_KEYPAIR_NAME SSH_KEY SSH_USER AWS_REGION AWS_PROFILE AWS_SUBNET_ID AWS_SECURITY_GROUP_IDS

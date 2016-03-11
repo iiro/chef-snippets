@@ -1,0 +1,79 @@
+---
+driver:
+  name: ec2
+  aws_ssh_key_id: <%= ENV['AWS_KEYPAIR_NAME'] %>
+  # This security group allows traffic safe networks only. Cannot keep it open. 
+  security_group_ids: [ <%= ENV['AWS_SECURITY_GROUP_IDS'] %>]
+  region: <%= ENV['AWS_REGION'] %>
+  availability_zone: <%= ENV['AWS_REGION'] %>a
+  require_chef_omnibus: true
+  associate_public_ip: true
+  interface: public
+  subnet_id: <%= ENV['AWS_SUBNET_ID'] %>
+  tags:
+    Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen"
+  # iam_profile_name: profile 
+  #  block_device_mappings:
+  #  - ebs_device_name: /dev/sda1
+  #    ebs_volume_size: 20
+  #    ebs_volume_type: gp2
+  #    ebs_delete_on_termination: true
+  #  - ebs_device_name: /dev/sda2
+  #    ebs_volume_type: gp2
+  #    ebs_virtual_name: test
+  #    ebs_volume_size: 15
+  #    ebs_delete_on_termination: true
+  #    ebs_snapshot_id: snap-0015d0bc
+  instance_type: t2.micro
+
+provisioner:
+  name: chef_zero
+
+# Uncomment the following verifier to leverage Inspec instead of Busser (the
+# default verifier)
+# verifier:
+#   name: inspec
+
+
+transport:
+  name: rsync
+  ssh_key: <%= ENV['HOME'] %>/.ssh/<%= ENV['SSH_KEY'] %>
+  ssh_timeout: 10
+  ssh_retries: 5
+  username: <%= ENV['SSH_USER'] %>
+
+
+platforms:
+  - name: ubuntu-14.04
+    driver:
+      # The AMI to be used.
+      # List of AMI's for Ubuntu: https://cloud-images.ubuntu.com/locator/ec2/
+      image_id: ami-02392b6e 
+
+
+base_suite: &BASESUITE
+    #data_bags_path: "../data_bags"
+    #environments_path: "../environments"
+    #roles_path: "../roles"
+    #provisioner:
+    #  client_rb:
+    #    # This is the Chef environment.
+    #    environment: my_chef_environment
+
+
+suites:
+  - name: default
+    run_list:
+    - recipe[example_cookbook::default]
+    # This overrides global Name tag to include suite name
+    driver:
+      tags:
+        Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - cookbook example_cookbook"
+  # - name: another_suite_using_role
+  #   run_list:
+  #   - role[example]
+  #   # This overrides global Name tag to include suite name
+  #   driver:
+  #     tags:
+  #       Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - role example"
+
