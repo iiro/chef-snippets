@@ -1,0 +1,186 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Template for Test Kitchen (kitchen-ec2) requirements",
+
+    "Parameters": {
+        "privatebucket": {
+            "Default": "private-bucket-name",
+            "Description": "Private S3 bucket",
+            "Type": "String"
+        },
+        "publicbucket": {
+            "Default": "public-bucket-name",
+            "Description": "Public S3 bucket",
+            "Type": "String"
+        },
+        "VpcId": {
+            "Default": "vpc-XXXXXXXX",
+            "Description": "VPC to put security group in",
+            "Type": "AWS::EC2::VPC::Id"
+        },
+        "Route53ZoneId": {
+            "Default": "YYYYYYYYYYYYYY",
+            "Description": "Route53 Zone ID",
+            "Type": "String"
+        }
+    },
+    "Resources": {
+        "testkitchensecuritygroup": {
+            "Properties": {
+                "GroupDescription": "Security group for test kitchen resources",
+                "Tags": [
+                    {
+                        "Key": "Name",
+                        "Value": "testkitchen"
+                    }
+                ],
+                "VpcId": {"Ref" : "VpcId"},
+                "SecurityGroupIngress": [
+                    {
+                        "FromPort": "22",
+                        "IpProtocol": "tcp",
+                        "CidrIp": "1.2.3.4/32",
+                        "ToPort": "22"
+                    },
+                    {
+                        "FromPort": "22",
+                        "IpProtocol": "tcp",
+                        "CidrIp": "1.2.3.5/32",
+                        "ToPort": "22"
+                    }
+                ]
+            },
+            "Type": "AWS::EC2::SecurityGroup"
+        },
+        "testkitchengroup": {
+            "Properties": {
+                "ManagedPolicyArns": [ "arn:aws:iam::aws:policy/AmazonEC2FullAccess" ],
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyDocument": {
+                            "Statement": [
+                                {
+                                    "Action": [
+                                        "iam:PassRole"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Resource": [
+                                        { "Fn::GetAtt" : ["testkitchenrole", "Arn"]}
+                                        
+                                    ]
+                                }
+                            ]
+                        },
+                        "PolicyName": "testkitchen_passrole"
+                    }
+                ]
+            },
+            "Type": "AWS::IAM::Group"
+        },
+        "testkitchenprofile": {
+            "Properties": {
+                "Path": "/",
+                "Roles": [
+                    {
+                        "Ref": "testkitchenrole"
+                    }
+                ]
+            },
+            "Type": "AWS::IAM::InstanceProfile"
+        },
+        "testkitchenrole": {
+            "Properties": {
+                "AssumeRolePolicyDocument": {
+                    "Statement": [
+                        {
+                            "Action": [
+                                "sts:AssumeRole"
+                            ],
+                            "Effect": "Allow",
+                            "Principal": {
+                                "Service": [
+                                    "ec2.amazonaws.com"
+                                ]
+                            }
+                        }
+                    ],
+                    "Version": "2012-10-17"
+                },
+                "Path": "/",
+                "Policies": [
+                    {
+                        "PolicyDocument": {
+                            "Statement": [
+                                {
+                                    "Action": [
+                                        "s3:ListBucket"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Resource": [
+                                        { "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref":"privatebucket"}]]}
+                                    ]
+                                },
+                                {
+                                    "Action": [
+                                        "s3:GetObject"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Resource": [
+                                        { "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref":"privatebucket"}, "/*"]]}
+                                    ]
+                                }
+                            ]
+                        },
+                        "PolicyName": "testkitchen_S3_private_readonly"
+                    },
+                    {
+                        "PolicyDocument": {
+                            "Statement": [
+                                {
+                                    "Action": [
+                                        "s3:ListBucket"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Resource": [
+                                        { "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref":"publicbucket"}]]}
+                                    ]
+                                },
+                                {
+                                    "Action": [
+                                        "s3:GetObject"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Resource": [
+                                        { "Fn::Join" : ["", ["arn:aws:s3:::", {"Ref":"publicbucket"}, "/*"]]}
+                                    ]
+                                }
+                            ]
+                        },
+                        "PolicyName": "testkitchen_S3_public_readonly"
+                    },
+                    {
+                        "PolicyDocument": {
+                            "Statement": [
+                                {
+                                    "Action": [
+                                        "route53:GetHostedZone",
+                                        "route53:ListResourceRecordSets",
+                                        "route53:ChangeResourceRecordSets"
+                                    ],
+                                    "Effect": "Allow",
+                                    "Resource": [
+                                        { "Fn::Join" : ["", ["arn:aws:route53:::hostedzone/", {"Ref":"Route53ZoneId"}]]}
+                                        
+                                    ]
+                                }
+                            ]
+                        },
+                        "PolicyName": "testkitchen_Route53_modifyprivatezone"
+                    }
+                ]
+            },
+            "Type": "AWS::IAM::Role"
+        }
+    }
+}
