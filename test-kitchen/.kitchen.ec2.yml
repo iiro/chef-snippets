@@ -13,28 +13,29 @@ driver:
   tags:
     Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen"
   # iam_profile_name: profile 
-  #  block_device_mappings:
-  #  - ebs_device_name: /dev/sda1
-  #    ebs_volume_size: 20
-  #    ebs_volume_type: gp2
-  #    ebs_delete_on_termination: true
-  #  - ebs_device_name: /dev/sda2
-  #    ebs_volume_type: gp2
-  #    ebs_virtual_name: test
-  #    ebs_volume_size: 15
-  #    ebs_delete_on_termination: true
-  #    ebs_snapshot_id: snap-0015d0bc
+  block_device_mappings:
+  - device_name: /dev/sda1
+    ebs:
+      volume_size: 20
+      volume_type: gp2
+      delete_on_termination: true
+  # - device_name: /dev/sda2
+  #   ebs:
+  #     volume_type: gp2
+  #     volume_size: 15
+  #     delete_on_termination: true
+    # snapshot_id: snap-0015d0bc
   instance_type: t2.micro
 
 provisioner:
-  name: chef_zero
-  ## For Policyfile...
-  # name: policyfile_zero
+  # name: chef_zero
+  ## For Policyfile
+  name: policyfile_zero
 
 # Uncomment the following verifier to leverage Inspec instead of Busser (the
 # default verifier)
-# verifier:
-#   name: inspec
+verifier:
+  name: inspec
 
 
 transport:
@@ -64,18 +65,25 @@ base_suite: &BASESUITE
 
 
 suites:
-  - name: default
-    run_list:
-    - recipe[example_cookbook::default]
-    # This overrides global Name tag to include suite name
-    driver:
-      tags:
-        Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - cookbook example_cookbook"
-  # - name: another_suite_using_role
+  # - name: cookbook
   #   run_list:
-  #   - role[example]
+  #   - recipe[example_cookbook::default]
   #   # This overrides global Name tag to include suite name
   #   driver:
   #     tags:
-  #       Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - role example"
+  #       Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - cookbook example_cookbook"
+  - name: policy_web_apache2
+    provisioner:
+      policyfile: policies/web_apache2.rb
+    inspec_tests:
+      - https://github.com/nathenharvey/tmp_compliance_profile
+    driver:
+      tags:
+        Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - policy web_apache2"
+  - name: policy_web_nginx
+    provisioner:
+      policyfile: policies/web_nginx.rb
+    driver:
+      tags:
+        Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - policy web_nginx"
 
