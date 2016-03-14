@@ -75,8 +75,9 @@ suites:
   - name: policy_web_apache2
     provisioner:
       policyfile: policies/web_apache2.rb
-    inspec_tests:
-      - https://github.com/nathenharvey/tmp_compliance_profile
+    # Does not work yet.
+    # inspec_tests:
+    #   - https://github.com/nathenharvey/tmp_compliance_profile
     driver:
       tags:
         Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - policy web_apache2"
