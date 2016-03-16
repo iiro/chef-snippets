@@ -75,9 +75,11 @@ suites:
   - name: policy_web_apache2
     provisioner:
       policyfile: policies/web_apache2.rb
-    # Does not work yet.
-    # inspec_tests:
-    #   - https://github.com/nathenharvey/tmp_compliance_profile
+    ## Example of how to use remote InSpec profiles.
+    ## Requires Test-Kitchen 1.6.0+ and kitchen-inspec RubyGem version 0.12.4+
+    #verifier:
+    #  inspec_tests:
+    #    - https://github.com/nathenharvey/tmp_compliance_profile
     driver:
       tags:
         Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - policy web_apache2"
