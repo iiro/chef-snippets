@@ -88,7 +88,7 @@ function install_chefdk() {
 
 function reinstall_gems() {
 
-  GEMFILE_PATH=~/Dropbox/chef
+  GEMFILE_PATH=~/checkouts/chef-snippets/test-kitchen
   
   if [ -f $GEMFILE_PATH/Gemfile ]; then
     cd $GEMFILE_PATH
