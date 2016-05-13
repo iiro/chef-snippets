@@ -1,0 +1,53 @@
+---
+driver:
+  name: docker
+  use_sudo: false
+  # This was added as a workaround for Docker for Mac. 
+  # GitHub issue: https://github.com/portertech/kitchen-docker/issues/207#issuecomment-218544624
+
+provisioner:
+  # name: chef_zero
+  ## For Policyfile
+  name: policyfile_zero
+
+# Uncomment the following verifier to leverage Inspec instead of Busser (the
+# default verifier)
+verifier:
+  name: inspec
+
+platforms:
+  # - name: ubuntu-14.04
+  - name: ubuntu-16.04
+    # image: iiro/ubuntu-chef-base
+
+
+base_suite: &BASESUITE
+    #data_bags_path: "../data_bags"
+    #environments_path: "../environments"
+    #roles_path: "../roles"
+    #provisioner:
+    #  client_rb:
+    #    # This is the Chef environment.
+    #    environment: my_chef_environment
+
+
+suites:
+  # - name: cookbook
+  #   run_list:
+  #   - recipe[example_cookbook::default]
+  #   # This overrides global Name tag to include suite name
+  #   driver:
+  #     tags:
+  #       Name: "<%= ENV['USER'] %>'s (<%= ENV['SSH_USER'] %>) Test-Kitchen - cookbook example_cookbook"
+  - name: policy_web_apache2
+    provisioner:
+      policyfile: policies/web_apache2.rb
+    ## Example of how to use remote InSpec profiles.
+    ## Requires Test-Kitchen 1.6.0+ and kitchen-inspec RubyGem version 0.12.4+
+    #verifier:
+    #  inspec_tests:
+    #    - https://github.com/nathenharvey/tmp_compliance_profile
+  - name: policy_web_nginx
+    provisioner:
+      policyfile: policies/web_nginx.rb
+
