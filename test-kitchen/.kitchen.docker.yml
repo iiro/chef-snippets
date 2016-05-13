@@ -16,9 +16,11 @@ verifier:
   name: inspec
 
 platforms:
-  # - name: ubuntu-14.04
-  - name: ubuntu-16.04
-    # image: iiro/ubuntu-chef-base
+  - name: ubuntu-14.04
+    driver_config:
+      image: iiro/ubuntu-chef-base:14.04.4-chef-12.9.41
+  # - name: ubuntu-16.04
+    
 
 
 base_suite: &BASESUITE
