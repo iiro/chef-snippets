@@ -21,7 +21,7 @@
 | chef show-policy | Shows all policies in Chef server |
 | chef delete-policy-group Policygroup-name | Deletes the policygroup from Chef server |
 | chef delete-policy | Delete all revisions of a policy on the server |
-| chef gem install -V appbundle-updater && appbundle-updater chefdk test-kitchen v1.6.0 | Installs the ChefDK component updater and upgrades your Test-Kitchen - can be used for all ChefDK components (e.g. berkshelf as well) |
+| chef gem install -V appbundle-updater && sudo appbundle-updater chefdk test-kitchen v1.6.0 | Installs the ChefDK component updater and upgrades your Test-Kitchen - can be used for all ChefDK components (e.g. berkshelf as well) |
 
 
 
