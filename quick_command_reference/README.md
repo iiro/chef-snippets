@@ -13,7 +13,7 @@
 | chef generate cookbook cookbook_name | Generates a cookbook using the generator cookbook |
 | chef exec bundle install | Runs the "bundle install" using ChefDK's Ruby |
 | chef gem list | Shows all RubyGems installed for you (located in your ~/.chefdk) |
-| chef gem install -V gem-name | Installs a single RubyGem for you |
+| chef gem install -V gem-name | Installs a single RubyGem for you (with verbose) |
 | chef exec bundle exec guard | use the Guard for continous automated iterations between saves |
 | chef install Policyfile-name | Creates the Policyfile's lock file; use "update if the lock file already exists" |
 | chef update (-a) policies/mn_gitlab.rb | Updates the Policyfile.lock file - use switch -a if only attributes were changed |
@@ -21,6 +21,7 @@
 | chef show-policy | Shows all policies in Chef server |
 | chef delete-policy-group Policygroup-name | Deletes the policygroup from Chef server |
 | chef delete-policy | Delete all revisions of a policy on the server |
+| chef gem install -V appbundle-updater && appbundle-updater chefdk test-kitchen v1.6.0 | Installs the ChefDK component updater and upgrades your Test-Kitchen - can be used for all ChefDK components (e.g. berkshelf as well) |
 
 
 
